@@ -41,9 +41,8 @@ public class ProductController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ResponseEntity<List<Product>> get() {
 
-		List<Product> a = null;
 		
-		return new ResponseEntity<List<Product>>( a, HttpStatus.OK);
+		return new ResponseEntity<List<Product>>( serviceProduct.getListeProducts(), HttpStatus.OK);
 
 	}
 	

@@ -7,6 +7,7 @@ public class Product {
     private final long id;
     private final String name;
     private final String compagny; // vendue par
+    private final int price;
 	public long getId() {
 		return id;
 	}
@@ -21,9 +22,13 @@ public class Product {
 		this.id = id;
 		this.name = name;
 		this.compagny = compagny;
+		this.price = price;
 	}
 	@Override
 	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", compagny=" + compagny;
+		return "Product [id=" + id + ", name=" + name + ", compagny=" + compagny+" price="+price;
+	}
+	public int getPrice() {
+		return price;
 	}
 }
