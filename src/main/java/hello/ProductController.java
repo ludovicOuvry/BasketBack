@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 	@Autowired
 	ServiceProduct serviceProduct;
+	
+	@Autowired
+	private ProviderRepository providerRepo;
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public ResponseEntity<Product> create(@RequestBody Product product) {
@@ -28,10 +31,11 @@ public class ProductController {
 	@RequestMapping(value = "/creates", method = RequestMethod.POST)
 	public ResponseEntity<List<Product>> creates(@RequestBody List<Product> products) {
 		
-		serviceProduct.setListeProducts(products);
+		
 		for (Product product : products) {
-			
+			serviceProduct.add(product);
 			System.out.println("test appel create plusieurs produit" + product);
+			
 		}
 
 		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
@@ -58,5 +62,22 @@ public class ProductController {
 	public String testRest() {
 		return "ok";
 
+	}
+	
+	@RequestMapping(value = "/fini", method = RequestMethod.GET)
+	public ResponseEntity<List<Product>> fin() {
+		
+		for (Product p : serviceProduct.getListeProducts() ) {
+			if(providerRepo.existsById(p.getCompagny())) {
+				//update
+				int amout = providerRepo.findById(p.getCompagny()).get().getAmount();
+				
+				providerRepo.save(new Provider(p.getCompagny(), amout+p.getPrice()));
+				
+			}else {
+				providerRepo.save(new Provider(p.getCompagny(), p.getPrice()));
+			}
+		}
+		return new ResponseEntity<List<Product>>( serviceProduct.getListeProducts(), HttpStatus.OK);
 	}
 }

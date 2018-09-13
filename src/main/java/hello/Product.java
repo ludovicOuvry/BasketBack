@@ -1,13 +1,9 @@
 package hello;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "product")
 public class Product {
-	@Id
+	
     private final long id;
     private final String name;
     private final String compagny; // vendue par
