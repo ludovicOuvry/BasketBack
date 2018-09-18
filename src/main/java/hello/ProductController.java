@@ -6,6 +6,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.JsonbHttpMessageConverter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +20,8 @@ public class ProductController {
 	
 	@Autowired
 	private ProviderRepository providerRepo;
-
+	
+	@CrossOrigin()
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public ResponseEntity<Product> create(@RequestBody Product product) {
 
@@ -41,14 +44,15 @@ public class ProductController {
 		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 
 	}
-
+	@CrossOrigin()
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ResponseEntity<List<Product>> get() {
+	public List<Product> get() {
 
-		
-		return new ResponseEntity<List<Product>>( serviceProduct.getListeProducts(), HttpStatus.OK);
+		System.out.println("get");
+		return serviceProduct.getListeProducts();
 
 	}
+	
 	
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
 	public ResponseEntity<List<Product>> delete(int id) {
@@ -80,4 +84,23 @@ public class ProductController {
 		}
 		return new ResponseEntity<List<Product>>( serviceProduct.getListeProducts(), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/products", method = RequestMethod.POST)
+	public ResponseEntity<List<Product>> productsPost(@RequestBody List<Product> products) {
+		
+		for (Product p : products ) {
+			if(providerRepo.existsById(p.getCompagny())) {
+				//update
+				int amout = providerRepo.findById(p.getCompagny()).get().getAmount();
+				
+				providerRepo.save(new Provider(p.getCompagny(), amout+p.getPrice()));
+				
+			}else {
+				providerRepo.save(new Provider(p.getCompagny(), p.getPrice()));
+			}
+		}
+		return new ResponseEntity<List<Product>>( serviceProduct.getListeProducts(), HttpStatus.OK);
+	}
+	
+	
 }
