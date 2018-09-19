@@ -29,11 +29,10 @@ public class ProductController {
 			if(providerRepo.existsById(p.getCompagny())) {
 				//update
 				int amout = providerRepo.findById(p.getCompagny()).get().getAmount();
-				
-				providerRepo.save(new Provider(p.getCompagny(), amout+p.getPrice()));
+				providerRepo.save(new Provider(p.getCompagny(), amout+(p.getPrice()*p.getQuantity())));
 				
 			}else {
-				providerRepo.save(new Provider(p.getCompagny(), p.getPrice()));
+				providerRepo.save(new Provider(p.getCompagny(), (p.getPrice())*p.getQuantity()));
 			}
 		}
 		return new ResponseEntity(HttpStatus.OK);
@@ -48,11 +47,10 @@ public class ProductController {
 			if(providerRepo.existsById(p.getCompagny())) {
 				//update
 				int amout = providerRepo.findById(p.getCompagny()).get().getAmount();
-				
-				providerRepo.save(new Provider(p.getCompagny(), amout+p.getPrice()));
+				providerRepo.save(new Provider(p.getCompagny(), amout+(p.getPrice()*p.getQuantity())));
 				
 			}else {
-				providerRepo.save(new Provider(p.getCompagny(), p.getPrice()));
+				providerRepo.save(new Provider(p.getCompagny(), (p.getPrice())*p.getQuantity()));
 			}
 		
 		return new ResponseEntity(HttpStatus.OK);

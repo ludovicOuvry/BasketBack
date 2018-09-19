@@ -8,6 +8,7 @@ public class Product {
     private final String name;
     private final String compagny; // vendue par
     private final int price;
+    private final int quantity;
 	public long getId() {
 		return id;
 	}
@@ -17,12 +18,16 @@ public class Product {
 	public String getCompagny() {
 		return compagny;
 	}
-	public Product(long id, String name, String compagny, int price) {
+	public Product(long id, String name, String compagny, int price,int quantity) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.compagny = compagny;
 		this.price = price;
+		this.quantity=quantity;
+	}
+	public int getQuantity() {
+		return quantity;
 	}
 	@Override
 	public String toString() {
