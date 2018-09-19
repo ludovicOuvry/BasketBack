@@ -20,10 +20,11 @@ public class ProductController {
 	private ProviderRepository providerRepo;
 	
 	@CrossOrigin()
-	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/valide", method = RequestMethod.POST)
 	public ResponseEntity valide(@RequestBody List<Product> products) {
+		
 		System.out.println("post");
+		System.out.println(products.size());
 		for (Product p : products ) {
 			if(providerRepo.existsById(p.getCompagny())) {
 				//update
@@ -37,6 +38,26 @@ public class ProductController {
 		}
 		return new ResponseEntity(HttpStatus.OK);
 	}
+	
+	
+	@CrossOrigin()
+	@RequestMapping(value = "/", method = RequestMethod.POST)
+	public ResponseEntity valide(@RequestBody Product products) {
+		
+			Product p = products;
+			if(providerRepo.existsById(p.getCompagny())) {
+				//update
+				int amout = providerRepo.findById(p.getCompagny()).get().getAmount();
+				
+				providerRepo.save(new Provider(p.getCompagny(), amout+p.getPrice()));
+				
+			}else {
+				providerRepo.save(new Provider(p.getCompagny(), p.getPrice()));
+			}
+		
+		return new ResponseEntity(HttpStatus.OK);
+	}
+	
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public Iterable<Provider> get() {
