@@ -21,10 +21,10 @@ public class ProductController {
 	
 	@CrossOrigin()
 	@RequestMapping(value = "/valide", method = RequestMethod.POST)
-	public ResponseEntity valide(@RequestBody List<Product> products) {
+	public ResponseEntity valide(@RequestBody Product[] products) {
 		
 		System.out.println("post");
-		System.out.println(products.size());
+		System.out.println(products.length);
 		for (Product p : products ) {
 			if(providerRepo.existsById(p.getCompagny())) {
 				//update
