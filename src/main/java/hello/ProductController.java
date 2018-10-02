@@ -46,6 +46,7 @@ public class ProductController {
 			Product p = products;
 			if(providerRepo.existsById(p.getCompagny())) {
 				//update
+				System.out.println("produit existant");
 				int amout = providerRepo.findById(p.getCompagny()).get().getAmount();
 				providerRepo.save(new Provider(p.getCompagny(), amout+(p.getPrice()*p.getQuantity())));
 				
