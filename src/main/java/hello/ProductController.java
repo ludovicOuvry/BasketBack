@@ -63,6 +63,12 @@ public class ProductController {
 		System.out.println("get ");
 		return  providerRepo.findAll();
 	}
+
+
+	public ProviderRepository getProviderRepo() {
+		return providerRepo;
+	}
+
 	
 	
 }
